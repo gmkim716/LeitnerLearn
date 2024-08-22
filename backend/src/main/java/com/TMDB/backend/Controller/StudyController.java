@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/study")
+@RequestMapping("/api/v1/study")
 @RequiredArgsConstructor
 @Tag(name = "Study API", description = "학습 관련 API를 제공합니다.")
 public class StudyController {

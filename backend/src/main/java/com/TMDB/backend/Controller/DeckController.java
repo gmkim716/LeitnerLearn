@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/decks")
+@RequestMapping("/api/v1/decks")
 @Tag(name = "Deck API", description = "덱 관리와 관련된 API입니다.")
 public class DeckController {
 

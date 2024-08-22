@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>진단 테스트</title>
+    <link rel="stylesheet" href="diagnostic.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">LeitnerLearn</div>
+    </header>
+
+    <main>
+      <h1>진단 테스트</h1>
+      <p>아래의 질문에 답하여 현재 학습 수준을 평가하세요.</p>
+
+      <form action="/submit-diagnostic" method="POST">
+        <div class="question">
+          <p>1. Apple의 뜻은 무엇인가요?</p>
+          <label>
+            <input type="radio" name="q1" value="사과" required />
+            사과
+          </label>
+          <label>
+            <input type="radio" name="q1" value="바나나" />
+            바나나
+          </label>
+          <label>
+            <input type="radio" name="q1" value="오렌지" />
+            오렌지
+          </label>
+        </div>
+
+        <div class="question">
+          <p>2. 다음 중 개발을 뜻하는 영어 단어는?</p>
+          <label>
+            <input type="radio" name="q2" value="Develop" required />
+            Develop
+          </label>
+          <label>
+            <input type="radio" name="q2" value="Destroy" />
+            Destroy
+          </label>
+          <label>
+            <input type="radio" name="q2" value="Delay" />
+            Delay
+          </label>
+        </div>
+
+        <button type="submit">테스트 제출</button>
+      </form>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 LeitnerLearn. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

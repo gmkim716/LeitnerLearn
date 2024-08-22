@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/cards")
+@RequestMapping("/api/v1/cards")
 @Tag(name = "Card API", description = "카드 관리와 관련된 API입니다.")
 public class CardController {
 
