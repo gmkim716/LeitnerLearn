@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>덱 목록</title>
+    <link rel="stylesheet" href="deck-list.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">학습 시스템</div>
+      <nav>
+        <ul>
+          <li><a href="#">홈</a></li>
+          <li><a href="#">학습</a></li>
+          <li><a href="#">프로필</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>내 덱 목록</h1>
+      <div class="deck-list">
+        <div class="deck">
+          <h2>기초 영어 단어</h2>
+          <p>10개의 카드</p>
+          <button onclick="location.href='deck-details.html'">덱 보기</button>
+        </div>
+        <div class="deck">
+          <h2>중급 영어 단어</h2>
+          <p>15개의 카드</p>
+          <button onclick="location.href='deck-details.html'">덱 보기</button>
+        </div>
+        <div class="deck">
+          <h2>고급 영어 단어</h2>
+          <p>20개의 카드</p>
+          <button onclick="location.href='deck-details.html'">덱 보기</button>
+        </div>
+      </div>
+      <button class="add-deck" onclick="location.href='create-deck.html'">
+        덱 추가
+      </button>
+    </main>
+
+    <footer>&copy; 2024 학습 시스템. All rights reserved.</footer>
+  </body>
+</html>

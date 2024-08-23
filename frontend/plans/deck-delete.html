@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>덱 삭제 확인</title>
+    <link rel="stylesheet" href="deck-delete.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">학습 시스템</div>
+      <nav>
+        <ul>
+          <li><a href="deck-list.html">덱 목록</a></li>
+          <li><a href="#">학습</a></li>
+          <li><a href="#">프로필</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>덱 삭제 확인</h1>
+      <p>이 덱을 정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+      <button
+        class="confirm-delete"
+        onclick="location.href='/api/decks/{deckId}/delete'"
+      >
+        삭제
+      </button>
+      <button class="cancel-delete" onclick="location.href='deck-details.html'">
+        취소
+      </button>
+    </main>
+
+    <footer>&copy; 2024 학습 시스템. All rights reserved.</footer>
+  </body>
+</html>
