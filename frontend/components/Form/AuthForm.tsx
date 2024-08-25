@@ -1,4 +1,4 @@
-import Form from "../ui/Form";
+import Form from "./Form";
 
 interface AuthFormProps {
   method: "GET" | "POST" | "PUT";
@@ -21,7 +21,7 @@ export default function AuthForm({
 }: AuthFormProps) {
   return (
     <Form method={method} onSubmit={onSubmit}>
-      <h1 className="text-gray-800 mb-6 text-xl">{title}</h1>
+      <h1 className="text-blue-600 text-2xl">{title}</h1>
       <div className="mb-5 text-left">
         <Form.Label htmlFor="email">이메일</Form.Label>
         <Form.Input

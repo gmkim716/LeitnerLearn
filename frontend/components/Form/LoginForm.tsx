@@ -1,5 +1,5 @@
-import AuthForm from ".";
-import Form from "../ui/Form";
+import AuthForm from "./AuthForm";
+import Form from "./Form";
 
 export default function LoginForm() {
   const handleSubmit = (e: React.FormEvent) => {

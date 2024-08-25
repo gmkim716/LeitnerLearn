@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>카드 상세 정보</title>
+    <link rel="stylesheet" href="card-detail.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">학습 시스템</div>
+      <nav>
+        <ul>
+          <li><a href="deck-list.html">덱 목록</a></li>
+          <li><a href="deck-detail.html">덱 상세 정보</a></li>
+          <li><a href="#">프로필</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>단어: apple</h1>
+      <p>뜻: 사과</p>
+      <p>예문: I like to eat an apple every morning.</p>
+      <button class="edit-card" onclick="location.href='edit-card.html'">
+        카드 수정
+      </button>
+      <button class="delete-card" onclick="location.href='delete-card.html'">
+        카드 삭제
+      </button>
+      <button class="back-to-deck" onclick="location.href='deck-detail.html'">
+        돌아가기
+      </button>
+    </main>
+
+    <footer>&copy; 2024 학습 시스템. All rights reserved.</footer>
+  </body>
+</html>
