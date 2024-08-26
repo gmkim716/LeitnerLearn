@@ -1,4 +1,3 @@
-import useCard from "@/hooks/useCard";
 import { useRouter } from "next/router";
 
 export default function CardDetailPage() {
@@ -8,8 +7,6 @@ export default function CardDetailPage() {
   const handlePrevButton = () => {
     router.back();
   };
-
-  // console.log("card", card);
 
   return (
     <div className="flex flex-col py-10 bg-background text-center">

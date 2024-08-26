@@ -15,7 +15,7 @@ export default function useCards(deckId: number) {
 
   useEffect(() => {
     fetchCards();
-  }, [deckId]);
+  }, [fetchCards]);
 
-  return { cards };
+  return { cards, refetch: fetchCards };
 }

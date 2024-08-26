@@ -1,5 +1,5 @@
 import AuthForm from "./AuthForm";
-import Form from "./Form";
+import Form from "../compound/form/Form";
 
 export default function EditProfileForm() {
   const handleSubmit = (e: React.FormEvent) => {

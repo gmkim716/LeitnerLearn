@@ -1,4 +1,4 @@
-import Form from "./Form";
+import Form from "../compound/form/Form";
 
 interface AuthFormProps {
   method: "GET" | "POST" | "PUT";
