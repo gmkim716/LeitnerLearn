@@ -47,18 +47,18 @@ public class StudyController {
     return ResponseEntity.ok(cards);
   }
 
-  @Operation(summary = "카드 복습 결과를 기록합니다.", description = "특정 카드에 대해 사용자가 정답을 맞췄는지 여부를 기록합니다.")
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "복습 결과가 성공적으로 기록되었습니다."),
-    @ApiResponse(responseCode = "404", description = "카드를 찾을 수 없습니다.")
-  })
-  @PostMapping("/cards/{cardId}/review")
-  public ResponseEntity<Void> reviewCard(
-    @Parameter(description = "복습한 카드의 ID", required = true) @PathVariable Long cardId,
-    @Parameter(description = "복습 결과가 정답이면 true, 오답이면 false", required = true) @RequestParam boolean correct) {
-    studyService.reviewCard(cardId, correct);
-    return ResponseEntity.ok().build();
-  }
+    @Operation(summary = "카드 복습 정답/오답을 기록합니다.", description = "특정 카드에 대해 사용자가 정답을 맞췄는지 여부를 기록합니다.")
+    @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "복습 결과가 성공적으로 기록되었습니다."),
+      @ApiResponse(responseCode = "404", description = "카드를 찾을 수 없습니다.")
+    })
+    @PostMapping("/card/{cardId}/review")
+    public ResponseEntity<Void> reviewCard(
+      @Parameter(description = "복습한 카드의 ID", required = true) @PathVariable Long cardId,
+      @Parameter(description = "복습 결과가 정답이면 true, 오답이면 false", required = true) @RequestParam boolean correct) {
+      studyService.reviewCard(cardId, correct);
+      return ResponseEntity.ok().build();
+    }
 
   @Operation(summary = "덱의 학습 상태를 조회합니다.", description = "특정 덱의 복습 상태(복습이 필요한 카드 수)를 조회합니다.")
   @ApiResponses(value = {
@@ -70,5 +70,18 @@ public class StudyController {
     @Parameter(description = "학습 상태를 조회할 덱의 ID", required = true) @PathVariable Long deckId) {
     String status = studyService.getStudyStatus(deckId);
     return ResponseEntity.ok(status);
+  }
+
+  // 8/26 추가
+  @Operation(summary = "오늘 복습 가능한 카드 목록을 조회합니다.", description = "특정 사용자가 오늘 복습할 수 있는 카드 목록을 가져옵니다.")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "복습 가능한 카드 목록이 성공적으로 반환되었습니다."),
+    @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없습니다.")
+  })
+  @GetMapping("/deck/review/{deckId}")
+  public ResponseEntity<List<Card>> getTodayReviewCards(
+    @Parameter(description = "덱 ID", required = true) @PathVariable Long deckId) {
+    List<Card> cards = studyService.getReviewCards(deckId);
+    return ResponseEntity.ok(cards);
   }
 }

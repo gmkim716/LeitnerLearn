@@ -9,8 +9,12 @@ import com.TMDB.backend.Repository.CardRepository;
 import com.TMDB.backend.Repository.DeckRepository;
 import com.TMDB.backend.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class StudyService {
 
+  private static final Logger log = LoggerFactory.getLogger(StudyService.class);
   private final CardRepository cardRepository;
   private final DeckRepository deckRepository;
   private final UserRepository userRepository;
@@ -64,7 +69,7 @@ public class StudyService {
     return cardRepository.findByDeckId(deckId);
   }
 
-  // 가드 복습 결과를 업데이트 한다
+  // 카드 복습 결과를 업데이트 한다
   public void reviewCard(Long cardId, boolean correct) {
     Card card = cardRepository.findById(cardId)
       .orElseThrow(() -> new RuntimeException("Card not found"));
@@ -73,8 +78,12 @@ public class StudyService {
     Box nextBox;
 
     if (correct) {  // 정답을 맞췄을 때
-      nextBox = boxRepository.findByBoxNumber(currentBox.getBoxNumber() + 1)  // 다음 Box로 이동한다
-        .orElseThrow(() -> new RuntimeException("Box not found"));
+      if (currentBox.getBoxNumber() < 5) {
+        nextBox = boxRepository.findByBoxNumber(currentBox.getBoxNumber() + 1)  // 다음 Box로 이동한다
+          .orElseThrow(() -> new RuntimeException("Box not found"));
+      } else {
+        nextBox = currentBox;  // Box 5에서는 이동하지 않는다 (장기기억 완료)
+      }
     } else {  // 정답을 틀렸을 때
       nextBox = boxRepository.findByBoxNumber(Math.max(currentBox.getBoxNumber() - 1, 1))  // 이전 Box로 이동한다, 1보다 작아지지 않도록 한다
         .orElseThrow(() -> new RuntimeException("Box not found"));
@@ -89,5 +98,12 @@ public class StudyService {
   public String getStudyStatus(Long deckId) {
     long reviewCards = cardRepository.countByDeckIdAndNextReviewAtBefore(deckId, LocalDateTime.now());
     return "복습이 필요한 카드 수: " + reviewCards;
+  }
+
+   // 8/26 추가
+  public List<Card> getReviewCards(Long deckId) {
+    LocalDateTime now = LocalDateTime.now();
+    log.info("############# getTodayReviewCards 실행" + now);
+    return cardRepository.findByDeckIdAndNextReviewAtBefore(deckId, now);
   }
 }

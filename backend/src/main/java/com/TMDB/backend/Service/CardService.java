@@ -24,18 +24,15 @@ public class CardService {
   // 카드를 생성한다
   public Card createCard(Long deckId, String term, String definition, String exampleSentence) {
     Deck deck = deckRepository.findById(deckId).orElseThrow(() -> new RuntimeException("Deck을 찾을 수 없습니다"));
-    // 첫 번째 Box를 가져온다
     Box firstBox = boxRepository.findByBoxNumber(1).orElseThrow(() -> new RuntimeException("Box를 찾을 수 없습니다"));
-
     Card card = Card.builder()
       .term(term)
       .definition(definition)
       .exampleSentence(exampleSentence)
       .deck(deck)
       .box(firstBox)
-      .nextReviewAt(LocalDateTime.now().plusDays(1))  // 첫 복습일을 다음 날로 설정
+      .nextReviewAt(LocalDateTime.now())  // 카드 등록 시점부터 복습에 활용 가능
       .build();
-
     return cardRepository.save(card);
   }
 
