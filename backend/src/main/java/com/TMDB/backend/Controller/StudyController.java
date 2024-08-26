@@ -72,7 +72,6 @@ public class StudyController {
     return ResponseEntity.ok(status);
   }
 
-  // 8/26 추가
   @Operation(summary = "오늘 복습 가능한 카드 목록을 조회합니다.", description = "특정 사용자가 오늘 복습할 수 있는 카드 목록을 가져옵니다.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "복습 가능한 카드 목록이 성공적으로 반환되었습니다."),
@@ -84,4 +83,18 @@ public class StudyController {
     List<Card> cards = studyService.getReviewCards(deckId);
     return ResponseEntity.ok(cards);
   }
+
+  // 사용자의 복습 덱 + 새로운 문제를 추가해서 자동 문제를 제공한다
+  @Operation(summary = "자동으로 문제를 추가합니다.", description = "특정 덱에 자동으로 문제를 추가합니다.")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "문제가 성공적으로 추가되었습니다."),
+    @ApiResponse(responseCode = "404", description = "덱을 찾을 수 없습니다.")
+  })
+  @PostMapping("/deck/make-learning-deck/{deckId}")
+  public ResponseEntity<Deck> makeLearningDeck(
+    @Parameter(description = "문제를 추가할 덱의 ID", required = true) @PathVariable Long deckId) {
+    Deck deck = studyService.makeLearningDeckWithDeckId(deckId);
+    return ResponseEntity.ok(deck);
+  }
+
 }

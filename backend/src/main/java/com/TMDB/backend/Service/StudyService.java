@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ public class StudyService {
   private final DeckRepository deckRepository;
   private final UserRepository userRepository;
   private final BoxRepository boxRepository;
+
 
   public Deck assignDeckBasedOnDifficulty(Long userId, String difficulty) {
     User user = userRepository.findById(userId)
@@ -65,6 +67,7 @@ public class StudyService {
   }
 
   // 복습할 카드 목록을 가져온다
+  @Transactional(readOnly = true)
   public List<Card> getCardsForReview(Long deckId) {
     return cardRepository.findByDeckId(deckId);
   }
@@ -94,16 +97,33 @@ public class StudyService {
     cardRepository.save(card);
   }
 
-  // 학습 상태를 확인한다
+  // 덱의 학습 상태를 조회한다
+  @Transactional(readOnly = true)
   public String getStudyStatus(Long deckId) {
     long reviewCards = cardRepository.countByDeckIdAndNextReviewAtBefore(deckId, LocalDateTime.now());
     return "복습이 필요한 카드 수: " + reviewCards;
   }
 
-   // 8/26 추가
+  // 복습 가능한 목록을 조회한다
+  @Transactional(readOnly = true)
   public List<Card> getReviewCards(Long deckId) {
-    LocalDateTime now = LocalDateTime.now();
-    log.info("############# getTodayReviewCards 실행" + now);
-    return cardRepository.findByDeckIdAndNextReviewAtBefore(deckId, now);
+    return cardRepository.findByDeckIdAndNextReviewAtBefore(deckId, LocalDateTime.now());
   }
+
+  // on developing... 8/26
+  // 자동으로 학습 목록을 생성한다
+  @Transactional(readOnly = true)
+  public List<Card> makeLearningDeckWithDeckId(Long deckId) {
+    List<Card> reviewCards = getReviewCards(deckId);
+    List<Card> newCards = cardRepository.findByDeckIdAndNextReviewAtIsNull(deckId);
+
+    if (reviewCards.size() < 5) {
+      int newCardCount = 5 - reviewCards.size();
+      List<Card> additionalCards = cardRepository.findTopNByDeckIdAndNextReviewAtIsNotNullOrderByNextReviewAtAsc(deckId, newCardCount);
+      newCards.addAll(additionalCards);
+    }
+
+    return newCards;
+  }
+
 }
