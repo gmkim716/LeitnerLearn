@@ -4,7 +4,7 @@ import useReview from "@/hooks/useReviews";
 import { getLearning } from "@/pages/api/learning";
 import { LearningCardType } from "@/types/learningCard";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function LearningPage() {
   const router = useRouter();
@@ -17,9 +17,10 @@ export default function LearningPage() {
 
   const currentCard = cards[0] as LearningCardType;
 
-  useEffect(() => {
-    console.log("cards", cards);
-  }, [cards]);
+  // 카드리스트 확인용 코드
+  // useEffect(() => {
+  //   console.log("cards", cards);
+  // }, [cards]);
 
   const handleShowAnswer = () => {
     setShowAnswer(true);
@@ -55,7 +56,7 @@ export default function LearningPage() {
           showAnswer={showAnswer}
         />
       )}
-      {!currentCard && <p>학습할 카드가 없습니다.</p>}
+      {/* 답안 확인 전 */}
       {!showAnswer && currentCard && (
         <div className="flex space-x-4">
           <Button color="green" onClick={handleShowAnswer}>
@@ -63,6 +64,7 @@ export default function LearningPage() {
           </Button>
         </div>
       )}
+      {/* 답안 확인 후 정답/오답 여부를 체크 */}
       {showAnswer && isAnswerChecked && (
         <div className="flex space-x-4">
           <Button color="blue" onClick={handleCorrectAnswer}>
@@ -73,6 +75,9 @@ export default function LearningPage() {
           </Button>
         </div>
       )}
+
+      {/* cards == [] */}
+      {!currentCard && <p>학습할 카드가 없습니다.</p>}
     </main>
   );
 }
