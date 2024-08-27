@@ -7,13 +7,12 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "cards")
+@Table(name = "review_cards")
 @Setter @Getter @SuperBuilder
 @AllArgsConstructor @NoArgsConstructor
-public class Card extends BaseCard {
+public class ReviewCard extends BaseCard {
 
   private LocalDateTime nextReviewAt;
 

@@ -2,7 +2,7 @@ package com.LeitnerLearn.backend.Service;
 
 
 import com.LeitnerLearn.backend.Entity.Box;
-import com.LeitnerLearn.backend.Entity.Card;
+import com.LeitnerLearn.backend.Entity.ReviewCard;
 import com.LeitnerLearn.backend.Entity.Deck;
 import com.LeitnerLearn.backend.Repository.BoxRepository;
 import com.LeitnerLearn.backend.Repository.CardRepository;
@@ -22,10 +22,10 @@ public class CardService {
   private final BoxRepository boxRepository;
 
   // 카드를 생성한다
-  public Card createCard(Long deckId, String term, String definition, String exampleSentence) {
+  public ReviewCard createCard(Long deckId, String term, String definition, String exampleSentence) {
     Deck deck = deckRepository.findById(deckId).orElseThrow(() -> new RuntimeException("Deck을 찾을 수 없습니다"));
     Box firstBox = boxRepository.findByBoxNumber(1).orElseThrow(() -> new RuntimeException("Box를 찾을 수 없습니다"));
-    Card card = Card.builder()
+    ReviewCard card = ReviewCard.builder()
       .term(term)
       .definition(definition)
       .exampleSentence(exampleSentence)
@@ -37,19 +37,19 @@ public class CardService {
   }
 
   // 카드 리스트를 조회한다
-  public List<Card> getCardsByDeck(Long deckId) {
+  public List<ReviewCard> getCardsByDeck(Long deckId) {
     return cardRepository.findByDeckId(deckId);
   }
 
   // 카드를 조회한다
-  public Card getCardById(Long cardId) {
+  public ReviewCard getCardById(Long cardId) {
     return cardRepository.findById(cardId)
       .orElseThrow(() -> new RuntimeException("Card를 찾을 수 없습니다"));
   }
 
   // 카드 내용을 수정한다
-  public Card updateCard(Long cardId, String term, String definition, String exampleSentence) {
-    Card card = cardRepository.findById(cardId)
+  public ReviewCard updateCard(Long cardId, String term, String definition, String exampleSentence) {
+    ReviewCard card = cardRepository.findById(cardId)
       .orElseThrow(() -> new RuntimeException("Card를 찾을 수 없습니다"));
 
     card.setTerm(term);

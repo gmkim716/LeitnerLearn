@@ -1,6 +1,6 @@
 package com.LeitnerLearn.backend.Controller;
 
-import com.LeitnerLearn.backend.Entity.Card;
+import com.LeitnerLearn.backend.Entity.ReviewCard;
 import com.LeitnerLearn.backend.Service.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,12 +28,12 @@ public class CardController {
     @ApiResponse(responseCode = "404", description = "덱을 찾을 수 없습니다.")
   })
   @PostMapping("/create")
-  public ResponseEntity<Card> createCard(
+  public ResponseEntity<ReviewCard> createCard(
     @Parameter(description = "카드를 추가할 덱의 ID", required = true) @RequestParam Long deckId,
     @Parameter(description = "카드의 용어", required = true) @RequestParam String term,
     @Parameter(description = "카드의 정의", required = true) @RequestParam String definition,
     @Parameter(description = "카드의 예문") @RequestParam(required = false) String exampleSentence) {
-    Card card = cardService.createCard(deckId, term, definition, exampleSentence);
+    ReviewCard card = cardService.createCard(deckId, term, definition, exampleSentence);
     return ResponseEntity.ok(card);
   }
 
@@ -43,9 +43,9 @@ public class CardController {
     @ApiResponse(responseCode = "404", description = "덱을 찾을 수 없습니다.")
   })
   @GetMapping("/deck/{deckId}")
-  public ResponseEntity<List<Card>> getCardsByDeck(
+  public ResponseEntity<List<ReviewCard>> getCardsByDeck(
     @Parameter(description = "카드를 조회할 덱의 ID", required = true) @PathVariable Long deckId) {
-    List<Card> cards = cardService.getCardsByDeck(deckId);
+    List<ReviewCard> cards = cardService.getCardsByDeck(deckId);
     return ResponseEntity.ok(cards);
   }
 
@@ -55,9 +55,9 @@ public class CardController {
     @ApiResponse(responseCode = "404", description = "카드를 찾을 수 없습니다.")
   })
   @GetMapping("/{cardId}")
-  public ResponseEntity<Card> getCardById(
+  public ResponseEntity<ReviewCard> getCardById(
     @Parameter(description = "조회할 카드의 ID", required = true) @PathVariable Long cardId) {
-    Card card = cardService.getCardById(cardId);
+    ReviewCard card = cardService.getCardById(cardId);
     return ResponseEntity.ok(card);
   }
 
@@ -67,12 +67,12 @@ public class CardController {
     @ApiResponse(responseCode = "404", description = "카드를 찾을 수 없습니다.")
   })
   @PutMapping("/{cardId}")
-  public ResponseEntity<Card> updateCard(
+  public ResponseEntity<ReviewCard> updateCard(
     @Parameter(description = "수정할 카드의 ID", required = true) @PathVariable Long cardId,
     @Parameter(description = "카드의 용어", required = true) @RequestParam String term,
     @Parameter(description = "카드의 정의", required = true) @RequestParam String definition,
     @Parameter(description = "카드의 예문") @RequestParam(required = false) String exampleSentence) {
-    Card updatedCard = cardService.updateCard(cardId, term, definition, exampleSentence);
+    ReviewCard updatedCard = cardService.updateCard(cardId, term, definition, exampleSentence);
     return ResponseEntity.ok(updatedCard);
   }
 
@@ -97,7 +97,7 @@ public class CardController {
     @ApiResponse(responseCode = "200", description = "박스 번호가 성공적으로 반환되었습니다."),
     @ApiResponse(responseCode = "404", description = "카드를 찾을 수 없습니다.") })
   public ResponseEntity<Integer> getCardBoxNumber( @Parameter(description = "박스 번호를 조회할 카드의 ID", required = true) @PathVariable Long cardId) {
-    Card card = cardService.getCardById(cardId);
+    ReviewCard card = cardService.getCardById(cardId);
     return ResponseEntity.ok(card.getBox().getBoxNumber());
   }
 }

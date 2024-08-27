@@ -1,6 +1,6 @@
 package com.LeitnerLearn.backend.Dto;
 
-import com.LeitnerLearn.backend.Entity.Card;
+import com.LeitnerLearn.backend.Entity.ReviewCard;
 import lombok.Data;
 
 import java.util.List;
@@ -9,5 +9,5 @@ import java.util.List;
 public class DeckResponseDto {
   private Long id;
   private String name;
-  private List<Card> cards;
+  private List<ReviewCard> cards;
 }

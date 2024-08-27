@@ -23,7 +23,7 @@ public class Deck {
   private String name;
 
   @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-  private List<Card> cards = new ArrayList<>();  // 초기화를 해주어야 NullPointerException이 발생하지 않는다
+  private List<ReviewCard> cards = new ArrayList<>();  // 초기화를 해주어야 NullPointerException이 발생하지 않는다
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")

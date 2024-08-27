@@ -14,7 +14,7 @@ public class Review {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "card_id")
-  private Card card;
+  private ReviewCard card;
 
   @Column(nullable = false)
   private LocalDateTime reviewDate;

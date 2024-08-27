@@ -1,6 +1,7 @@
 package com.LeitnerLearn.backend.Controller;
 
-import com.LeitnerLearn.backend.Entity.Card;
+import com.LeitnerLearn.backend.Dto.LearningCardDto;
+import com.LeitnerLearn.backend.Entity.ReviewCard;
 import com.LeitnerLearn.backend.Entity.Deck;
 import com.LeitnerLearn.backend.Entity.DifficultyLevel;
 import com.LeitnerLearn.backend.Entity.GlobalLearningCard;
@@ -82,9 +83,9 @@ public class StudyController {
     @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없습니다.")
   })
   @GetMapping("/deck/review/{deckId}")
-  public ResponseEntity<List<Card>> getReviewCards(
+  public ResponseEntity<List<ReviewCard>> getReviewCards(
     @Parameter(description = "덱 ID", required = true) @PathVariable Long deckId) {
-    List<Card> cards = studyService.getReviewCards(deckId);
+    List<ReviewCard> cards = studyService.getReviewCards(deckId);
     return ResponseEntity.ok(cards);
   }
 
@@ -99,14 +100,13 @@ public class StudyController {
 
   // stepUp. 학습을 위한 카드 목록을 생성한다
   @GetMapping("/make-learning-cards/{deckId}/{levelCode}/{size}")
-  public ResponseEntity<List<?>> makeLearningCards(
+  public ResponseEntity<LearningCardDto> makeLearningCards(
     @PathVariable Long deckId,  // 특정 사용자의 복습용 덱
     @PathVariable DifficultyLevel levelCode,  // 학습 난이도
     @PathVariable int size) {  // 개수 설정
-    List<?> cards = studyService.makeLearningCards(deckId, levelCode, size);
+    LearningCardDto cards = studyService.makeLearningCards(deckId, levelCode, size);
     return ResponseEntity.ok(cards);
   }
-
 
 //  @Operation(summary = "복습 가능한 카드 목록 + 새로운 문제를 추가해서 30개의 학습 목록을 생성합니다.", description = "특정 사용자가 복습할 수 있는 카드 목록을 가져옵니다.")
 //  @ApiResponses(value = {

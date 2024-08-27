@@ -23,6 +23,6 @@ public class Box {
   private int reviewIntervalDays;  // Box에서 복습 간격 (일 단위)
 
   @OneToMany(mappedBy = "box", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Card> cards = new ArrayList<>();
+  private List<ReviewCard> cards = new ArrayList<>();
 
 }
