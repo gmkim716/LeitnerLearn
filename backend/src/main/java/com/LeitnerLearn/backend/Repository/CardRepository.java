@@ -1,0 +1,15 @@
+package com.LeitnerLearn.backend.Repository;
+
+import com.LeitnerLearn.backend.Entity.Card;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Repository
+public interface CardRepository extends JpaRepository<Card, Long> {
+  List<Card> findByDeckId(Long deckId);
+  long countByDeckIdAndNextReviewAtBefore(Long deckId, LocalDateTime now);
+  List<Card> findByDeckIdAndNextReviewAtBefore(Long deckId, LocalDateTime now);
+}
