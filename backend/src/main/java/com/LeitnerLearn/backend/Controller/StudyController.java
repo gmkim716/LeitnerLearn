@@ -2,7 +2,6 @@ package com.LeitnerLearn.backend.Controller;
 
 import com.LeitnerLearn.backend.Dto.LearningCardDto;
 import com.LeitnerLearn.backend.Entity.ReviewCard;
-import com.LeitnerLearn.backend.Entity.Deck;
 import com.LeitnerLearn.backend.Entity.DifficultyLevel;
 import com.LeitnerLearn.backend.Entity.GlobalLearningCard;
 import com.LeitnerLearn.backend.Service.GlobalLearningCardService;
@@ -26,19 +25,6 @@ public class StudyController {
 
   private final StudyService studyService;
   private final GlobalLearningCardService globalLearningCardService;
-
-  @Operation(summary = "사용자에게 자동으로 덱을 할당합니다.", description = "난이도 평가 결과에 따라 적절한 덱과 단어를 자동으로 할당합니다.")
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "덱이 성공적으로 할당되었습니다."),
-    @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
-  })
-  @PostMapping("/assign-deck")
-  public ResponseEntity<Deck> assignDeckBasedOnDifficulty(
-    @Parameter(description = "덱을 할당할 사용자의 ID", required = true) @RequestParam Long userId,
-    @Parameter(description = "평가된 난이도 (예: Beginner, Intermediate, Advanced)", required = true) @RequestParam String difficulty) {
-    Deck deck = studyService.assignDeckBasedOnDifficulty(userId, difficulty);
-    return ResponseEntity.ok(deck);
-  }
 
 //  @Operation(summary = "전체 복습 카드 목록을 조회합니다.", description = "특정 덱에서 복습이 필요한 카드 목록을 가져옵니다.")
 //  @ApiResponses(value = {
@@ -65,29 +51,29 @@ public class StudyController {
       return ResponseEntity.ok().build();
     }
 
-  @Operation(summary = "덱의 학습 상태를 조회합니다.", description = "특정 덱의 복습 상태(복습이 필요한 카드 수)를 조회합니다.")
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "덱의 학습 상태가 성공적으로 반환되었습니다."),
-    @ApiResponse(responseCode = "404", description = "덱을 찾을 수 없습니다.")
-  })
-  @GetMapping("/decks/{deckId}/status")
-  public ResponseEntity<String> getDeckStudyStatus(
-    @Parameter(description = "학습 상태를 조회할 덱의 ID", required = true) @PathVariable Long deckId) {
-    String status = studyService.getStudyStatus(deckId);
-    return ResponseEntity.ok(status);
-  }
+//  @Operation(summary = "덱의 학습 상태를 조회합니다.", description = "특정 덱의 복습 상태(복습이 필요한 카드 수)를 조회합니다.")
+//  @ApiResponses(value = {
+//    @ApiResponse(responseCode = "200", description = "덱의 학습 상태가 성공적으로 반환되었습니다."),
+//    @ApiResponse(responseCode = "404", description = "덱을 찾을 수 없습니다.")
+//  })
+//  @GetMapping("/decks/{deckId}/status")
+//  public ResponseEntity<String> getDeckStudyStatus(
+//    @Parameter(description = "학습 상태를 조회할 덱의 ID", required = true) @PathVariable Long deckId) {
+//    String status = studyService.getStudyStatus(deckId);
+//    return ResponseEntity.ok(status);
+//  }
 
-  @Operation(summary = "복습 가능한 카드 목록을 조회합니다.", description = "특정 사용자가 복습할 수 있는 카드 목록을 가져옵니다.")
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "복습 가능한 카드 목록이 성공적으로 반환되었습니다."),
-    @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없습니다.")
-  })
-  @GetMapping("/deck/review/{deckId}")
-  public ResponseEntity<List<ReviewCard>> getReviewCards(
-    @Parameter(description = "덱 ID", required = true) @PathVariable Long deckId) {
-    List<ReviewCard> cards = studyService.getReviewCards(deckId);
-    return ResponseEntity.ok(cards);
-  }
+//  @Operation(summary = "복습 가능한 카드 목록을 조회합니다.", description = "특정 사용자가 복습할 수 있는 카드 목록을 가져옵니다.")
+//  @ApiResponses(value = {
+//    @ApiResponse(responseCode = "200", description = "복습 가능한 카드 목록이 성공적으로 반환되었습니다."),
+//    @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없습니다.")
+//  })
+//  @GetMapping("/deck/review/{deckId}")
+//  public ResponseEntity<List<ReviewCard>> getReviewCards(
+//    @Parameter(description = "덱 ID", required = true) @PathVariable Long deckId) {
+//    List<ReviewCard> cards = studyService.getReviewCards(deckId);
+//    return ResponseEntity.ok(cards);
+//  }
 
   // step2. 학습 레벨에 해당하는 count 개의 데이터를 가져온다
   @GetMapping("/global-learning-cards/{levelCode}/{count}")
@@ -97,16 +83,16 @@ public class StudyController {
     List<GlobalLearningCard> globalLearningCards = studyService.getGlobalLearningCardsByDifficultyLevel(levelCode, count);
     return ResponseEntity.ok(globalLearningCards);
   }
-
-  // stepUp. 학습을 위한 카드 목록을 생성한다
-  @GetMapping("/make-learning-cards/{deckId}/{levelCode}/{size}")
-  public ResponseEntity<LearningCardDto> makeLearningCards(
-    @PathVariable Long deckId,  // 특정 사용자의 복습용 덱
-    @PathVariable DifficultyLevel levelCode,  // 학습 난이도
-    @PathVariable int size) {  // 개수 설정
-    LearningCardDto cards = studyService.makeLearningCards(deckId, levelCode, size);
-    return ResponseEntity.ok(cards);
-  }
+//
+//  // stepUp. 학습을 위한 카드 목록을 생성한다
+//  @GetMapping("/make-learning-cards/{deckId}/{levelCode}/{size}")
+//  public ResponseEntity<LearningCardDto> makeLearningCards(
+//    @PathVariable Long deckId,  // 특정 사용자의 복습용 덱
+//    @PathVariable DifficultyLevel levelCode,  // 학습 난이도
+//    @PathVariable int size) {  // 개수 설정
+//    LearningCardDto cards = studyService.makeLearningCards(deckId, levelCode, size);
+//    return ResponseEntity.ok(cards);
+//  }
 
 //  @Operation(summary = "복습 가능한 카드 목록 + 새로운 문제를 추가해서 30개의 학습 목록을 생성합니다.", description = "특정 사용자가 복습할 수 있는 카드 목록을 가져옵니다.")
 //  @ApiResponses(value = {

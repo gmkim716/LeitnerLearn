@@ -16,7 +16,5 @@ public class UserDto {
   private Role role;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-  private List<Long> deckIds;
-  private List<Long> achievementIds;
 
 }

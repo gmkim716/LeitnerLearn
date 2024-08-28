@@ -1,6 +1,5 @@
 package com.LeitnerLearn.backend.Service;
 
-import com.LeitnerLearn.backend.Dto.LearningCardDto;
 import com.LeitnerLearn.backend.Entity.*;
 import com.LeitnerLearn.backend.Repository.*;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -18,56 +16,19 @@ import java.util.*;
 @RequiredArgsConstructor
 public class StudyService {
 
-  private final CardRepository cardRepository;
-  private final DeckRepository deckRepository;
-  private final UserRepository userRepository;
+  private final ReviewCardRepository reviewCardRepository;
   private final BoxRepository boxRepository;
   private final GlobalLearningCardRepository globalLearningCardRepository;
-
-
-  public Deck assignDeckBasedOnDifficulty(Long userId, String difficulty) {
-    User user = userRepository.findById(userId)
-      .orElseThrow(() -> new RuntimeException("User not found"));
-
-    Map<String, List<String>> difficultyWordMap = Map.of(
-      "Beginner", List.of("Apple", "Banana", "Cat"),
-      "Intermediate", List.of("Develop", "Structure", "Concept"),
-      "Advanced", List.of("Synthesize", "Phenomenon", "Elaborate")
-    );
-
-    List<String> terms = difficultyWordMap.getOrDefault(difficulty, List.of());
-
-    Deck deck = new Deck();
-    deck.setName(difficulty + " Vocabulary");
-    deck.setUser(user);
-    deck = deckRepository.save(deck);
-
-    Box firstBox = boxRepository.findByBoxNumber(1)
-      .orElseThrow(() -> new RuntimeException("Box not found"));
-
-    for (String term : terms) {
-      ReviewCard card = ReviewCard.builder()
-        .term(term)
-        .definition("Definition of " + term)
-        .deck(deck)
-        .box(firstBox)
-        .build();
-      card.updateNextReviewDate();  // 다음 복습 날짜를 설정한다
-      cardRepository.save(card);
-    }
-
-    return deck;
-  }
-
-  // 복습할 카드 목록을 가져온다
-  @Transactional(readOnly = true)
-  public List<ReviewCard> getCardsForReview(Long deckId) {
-    return cardRepository.findByDeckId(deckId);
-  }
+//
+//  // 복습할 카드 목록을 가져온다
+//  @Transactional(readOnly = true)
+//  public List<ReviewCard> getCardsForReview(Long deckId) {
+//    return cardRepository.findByDeckId(deckId);
+//  }
 
   // 카드 복습 결과를 업데이트 한다
   public void reviewCard(Long cardId, boolean correct) {
-    ReviewCard card = cardRepository.findById(cardId)
+    ReviewCard card = reviewCardRepository.findById(cardId)
       .orElseThrow(() -> new RuntimeException("Card not found"));
 
     Box currentBox = card.getBox();
@@ -87,21 +48,21 @@ public class StudyService {
 
     card.setBox(nextBox);
     card.updateNextReviewDate();
-    cardRepository.save(card);
+    reviewCardRepository.save(card);
   }
 
-  // 덱의 학습 상태를 조회한다
-  @Transactional(readOnly = true)
-  public String getStudyStatus(Long deckId) {
-    int reviewCards = cardRepository.countByDeckIdAndNextReviewAtBefore(deckId, LocalDateTime.now());
-    return "복습이 필요한 카드 수: " + reviewCards;
-  }
+//  // 덱의 학습 상태를 조회한다
+//  @Transactional(readOnly = true)
+//  public String getStudyStatus(Long deckId) {
+//    int reviewCards = cardRepository.countByDeckIdAndNextReviewAtBefore(deckId, LocalDateTime.now());
+//    return "복습이 필요한 카드 수: " + reviewCards;
+//  }
 
-  // 복습 가능한 목록을 조회한다
-  @Transactional(readOnly = true)
-  public List<ReviewCard> getReviewCards(Long deckId) {
-    return cardRepository.findByDeckIdAndNextReviewAtBefore(deckId, LocalDateTime.now());
-  }
+//  // 복습 가능한 목록을 조회한다
+//  @Transactional(readOnly = true)
+//  public List<ReviewCard> getReviewCards(Long deckId) {
+//    return cardRepository.findByDeckIdAndNextReviewAtBefore(deckId, LocalDateTime.now());
+//  }
 
   // global 학습 목록에서 difficultyLevel에 해당하는 cnt 개의 데이터를 조회한다
   @Transactional(readOnly = true)
@@ -111,22 +72,22 @@ public class StudyService {
     return pageResult.getContent();
   }
 
-  @Transactional(readOnly = true)
-  public LearningCardDto makeLearningCards(Long deckId, DifficultyLevel difficultyLevel, int size) {
-    List<ReviewCard> reviewCards = getReviewCards(deckId); // 복습 가능한 카드 조회
-    int reviewCardsCount = reviewCards.size();  // 복습 가능한 카드의 수 조회
-
-    // 레벨에 맞는 global 학습 카드 조회
-    List<GlobalLearningCard> newCards = getGlobalLearningCardsByDifficultyLevel(difficultyLevel, size - reviewCardsCount);
-
-    // 무작위 순서로 섞인 객체를 생성
-    List<Object> combinedCards = new ArrayList<>();
-    combinedCards.addAll(reviewCards);
-    combinedCards.addAll(newCards);
-    Collections.shuffle(combinedCards);
-
-    return new LearningCardDto(reviewCards, newCards, combinedCards);
-  }
+//  @Transactional(readOnly = true)
+//  public LearningCardDto makeLearningCards(Long deckId, DifficultyLevel difficultyLevel, int size) {
+//    List<ReviewCard> reviewCards = getReviewCards(deckId); // 복습 가능한 카드 조회
+//    int reviewCardsCount = reviewCards.size();  // 복습 가능한 카드의 수 조회
+//
+//    // 레벨에 맞는 global 학습 카드 조회
+//    List<GlobalLearningCard> newCards = getGlobalLearningCardsByDifficultyLevel(difficultyLevel, size - reviewCardsCount);
+//
+//    // 무작위 순서로 섞인 객체를 생성
+//    List<Object> combinedCards = new ArrayList<>();
+//    combinedCards.addAll(reviewCards);
+//    combinedCards.addAll(newCards);
+//    Collections.shuffle(combinedCards);
+//
+//    return new LearningCardDto(reviewCards, newCards, combinedCards);
+//  }
 
 //
 //  @Transactional(readOnly = true)

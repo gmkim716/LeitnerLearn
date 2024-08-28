@@ -21,8 +21,8 @@ public class ReviewCard extends BaseCard {
   private Box box;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "deck_id") @JsonIgnore
-  private Deck deck;
+  @JoinColumn(name = "user_id") @JsonIgnore
+  private User user;
 
   // 다음 복습 날짜를 설정한다
   public void updateNextReviewDate() {
@@ -31,7 +31,7 @@ public class ReviewCard extends BaseCard {
     }
   }
 
-  // 학습자가 맞췄을 때 다음 Box로 이동한다
+  // 정답을 맞췄을 때 다음 Box로 이동한다
   public void promoteToNextBox(Box nextBox) {
     setBox(nextBox);
     updateNextReviewDate();

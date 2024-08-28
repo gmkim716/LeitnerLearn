@@ -47,14 +47,5 @@ public class User {
   private LocalDateTime updatedAt;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Deck> decks = new ArrayList<>();  // 새로 생성된 User 객체가 빈 decks 리스트를 가지도록 초기화
-
-  @ManyToMany
-  @JoinTable(
-    name = "user_achievements",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "achievement_id")
-  )
-  private List<Achievement> achievements;
-
+  private List<ReviewCard> reviewCards = new ArrayList<>();
 }
