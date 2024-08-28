@@ -46,19 +46,9 @@ public class ReviewCardService {
     return reviewCardRepository.findByUserId(userId);
   }
 
-
-
-
-
-//
-//  // 카드 리스트를 조회한다
-//  public List<ReviewCard> getCardsByDeck(Long deckId) {
-//    return cardRepository.findByDeckId(deckId);
-//  }
-
   // 카드를 조회한다
-  public ReviewCard getCardById(Long cardId) {
-    return reviewCardRepository.findById(cardId)
+  public ReviewCard getReviewCardByGlobalLearningCardId(Long cardId) {
+    return reviewCardRepository.findByGlobalLearningCardId(cardId)
       .orElseThrow(() -> new RuntimeException("Card를 찾을 수 없습니다"));
   }
 

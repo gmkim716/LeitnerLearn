@@ -20,11 +20,4 @@ public class GlobalLearningCardService {
   public List<GlobalLearningCard> getGlobalLearningCardsByDifficultyLevel(DifficultyLevel levelCode) {
     return globalLearningCardRepository.findAllByDifficultyLevel(levelCode);
   }
-
-//  // 학습 레벨에 맞는 global 학습 카드 목록을 가져온다 + 사용자의 deck에 추가 되지 않은 카드만 가져온다
-//  @Transactional(readOnly = true)
-//  public List<GlobalLearningCard> getGlobalLearningCardsByDifficultyLevelAndNotInUserDeck(DifficultyLevel levelCode, Long deckId) {
-//    return globalLearningCardRepository.findAllByDifficultyLevelAndNotInUserDeck(levelCode, deckId);
-//  }
-
 }

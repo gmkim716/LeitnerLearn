@@ -17,8 +17,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/cards")
-@Tag(name = "Card API", description = "카드 관리와 관련된 API입니다.")
+@RequestMapping("/api/v1")
+@Tag(name = "Review Card API", description = "복습 카드 관리와 관련된 API입니다.")
 public class ReviewCardController {
 
   private final ReviewCardService reviewCardService;
@@ -28,7 +28,7 @@ public class ReviewCardController {
     @ApiResponse(responseCode = "200", description = "카드가 성공적으로 생성되었습니다."),
     @ApiResponse(responseCode = "404", description = "덱을 찾을 수 없습니다.")
   })
-  @PostMapping("/create")
+  @PostMapping("/review-card/create")
   public ResponseEntity<ReviewCard> createCard(
     @RequestBody CreateCardRequestDto request) {
     ReviewCard card = reviewCardService.createCard(request);
@@ -40,7 +40,7 @@ public class ReviewCardController {
     @ApiResponse(responseCode = "200", description = "복습 카드 목록이 성공적으로 반환되었습니다."),
     @ApiResponse(responseCode = "404", description = "복습 카드 목록을 찾을 수 없습니다.")
   })
-  @GetMapping("/review/{userId}")
+  @GetMapping("/review-cards/{userId}")
   public ResponseEntity<List<ReviewCard>> getCardsByUserId(
     @Parameter(description = "카드를 조회할 사용자의 ID", required = true) @PathVariable Long userId) {
     List<ReviewCard> cards = reviewCardService.getCardsByUserId(userId);
@@ -52,10 +52,10 @@ public class ReviewCardController {
     @ApiResponse(responseCode = "200", description = "카드가 성공적으로 반환되었습니다."),
     @ApiResponse(responseCode = "404", description = "카드를 찾을 수 없습니다.")
   })
-  @GetMapping("/{cardId}")
+  @GetMapping("/review-card/{cardId}")
   public ResponseEntity<ReviewCard> getCardById(
     @Parameter(description = "조회할 카드의 ID", required = true) @PathVariable Long cardId) {
-    ReviewCard card = reviewCardService.getCardById(cardId);
+    ReviewCard card = reviewCardService.getReviewCardByGlobalLearningCardId(cardId);
     return ResponseEntity.ok(card);
   }
 }

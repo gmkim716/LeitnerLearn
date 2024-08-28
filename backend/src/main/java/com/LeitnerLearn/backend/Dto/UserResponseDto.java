@@ -1,12 +1,10 @@
 package com.LeitnerLearn.backend.Dto;
 
-import com.LeitnerLearn.backend.Entity.Achievement;
 import com.LeitnerLearn.backend.Entity.Role;
 import com.LeitnerLearn.backend.Entity.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class UserResponseDto {
