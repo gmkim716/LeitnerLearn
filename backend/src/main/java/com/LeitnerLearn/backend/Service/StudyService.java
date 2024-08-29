@@ -1,5 +1,6 @@
 package com.LeitnerLearn.backend.Service;
 
+import com.LeitnerLearn.backend.Dto.CardIdListDto;
 import com.LeitnerLearn.backend.Dto.LearningCardDto;
 import com.LeitnerLearn.backend.Dto.LearningLevelStatsDto;
 import com.LeitnerLearn.backend.Dto.LearningStatsDto;
@@ -66,7 +67,6 @@ public class StudyService {
       .box(box)
       .difficultyLevel(newCard.getDifficultyLevel())
       .build();
-
     reviewCardRepository.save(reviewCard);
 
     if (boxNumber == 5) {
@@ -143,14 +143,16 @@ public class StudyService {
     User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
 
     List<ReviewCard> reviewCards = reviewCardRepository.findByUserId(userId);
-    int totalReviewCardsCount = reviewCards.size();
 
+    CardIdListDto reviewingCardIds = user.getReviewingCardIds();
+    CardIdListDto longTermMemoryCardIds = user.getLongTermMemoryCardIds();
     LearningLevelStatsDto levelStats = getLearningLevelStatsDto(reviewCards);
 
     return LearningStatsDto.builder()
       .userId(user.getId())
       .username(user.getUsername())
-      .totalReviewCardsCount(totalReviewCardsCount)
+      .reviewingCardIds(reviewingCardIds)
+      .longTermMemoryCardIds(longTermMemoryCardIds)
       .learningLevelStats(levelStats)
       .build();
   }

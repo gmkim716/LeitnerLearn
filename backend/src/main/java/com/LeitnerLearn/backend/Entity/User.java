@@ -1,5 +1,7 @@
 package com.LeitnerLearn.backend.Entity;
 
+import com.LeitnerLearn.backend.Dto.CardIdListDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -46,21 +48,34 @@ public class User {
   @LastModifiedDate
   private LocalDateTime updatedAt;
 
-  @ElementCollection  // Check. 정리하기
+  @ElementCollection // Check. 직렬화에 대해 정리하기
   @CollectionTable(name = "user_reviewing_card_ids", joinColumns = @JoinColumn(name = "user_id"))
   @Column(name = "card_id")
-  private List<Long> reviewCardIds = new ArrayList<>();
+  private List<Long> reviewingCardIds = new ArrayList<>();
 
   @ElementCollection
   @CollectionTable(name = "user_long_term_memory_card_ids", joinColumns = @JoinColumn(name = "user_id"))
+  @Column(name = "card_id")
   private List<Long> longTermMemoryCardIds = new ArrayList<>();
 
+
+  // Transient를 사용해 데이터베이스에 저장되지 않도록 한다
+  @Transient
+  public CardIdListDto getReviewingCardIds() {
+    return new CardIdListDto(this.reviewingCardIds.size(), this.reviewingCardIds);
+  }
+
+  @Transient
+  public CardIdListDto getLongTermMemoryCardIds() {
+    return new CardIdListDto(this.longTermMemoryCardIds.size(), this.longTermMemoryCardIds);
+  }
+
   public void addReviewCardId(Long reviewCardId) {
-    this.reviewCardIds.add(reviewCardId);
+    this.reviewingCardIds.add(reviewCardId);
   }
 
   public void removeReviewCardId(Long reviewCardId) {
-    this.reviewCardIds.remove(reviewCardId);
+    this.reviewingCardIds.remove(reviewCardId);
   }
 
   public void addLongTermMemoryCardId(Long longTermMemoryCardId) {
@@ -74,4 +89,6 @@ public class User {
       this.addReviewCardId(cardId);
     }
   }
+
+
 }

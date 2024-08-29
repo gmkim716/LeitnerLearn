@@ -8,7 +8,8 @@ import lombok.Data;
 public class LearningStatsDto {
   private Long userId;
   private String username;
-  private int totalReviewCardsCount;
+  private CardIdListDto reviewingCardIds;
+  private CardIdListDto longTermMemoryCardIds;
   private LearningLevelStatsDto learningLevelStats;
 }
 
