@@ -2,6 +2,8 @@ package com.LeitnerLearn.backend.Controller;
 
 import com.LeitnerLearn.backend.Dto.LearningCardDto;
 import com.LeitnerLearn.backend.Dto.LearningStatsDto;
+import com.LeitnerLearn.backend.Dto.StarterCardsDto;
+import com.LeitnerLearn.backend.Entity.GlobalLearningCard;
 import com.LeitnerLearn.backend.Service.StudyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/study")
@@ -56,5 +60,17 @@ public class StudyController {
     @Parameter(description = "사용자 ID", required = true) @PathVariable Long userId) {
     LearningStatsDto stats = studyService.getLearningStats(userId);
     return ResponseEntity.ok(stats);
+  }
+
+  @Operation(summary = "필수 학습카드 이수 여부를 확인합니다", description = "필수 학습 카드 중 학습하지 않은 카드 리스트를 반환합니다.")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "필수 학습카드를 모두 이수했습니다."),
+    @ApiResponse(responseCode = "404", description = "필수 학습카드를 이수하지 못했습니다.")
+  })
+  @GetMapping("/cards/starter-cards/{userId}")
+  public ResponseEntity<StarterCardsDto> getStarterCards(
+    @Parameter(description = "사용자 ID", required = true) @PathVariable Long userId) {
+    StarterCardsDto cards = studyService.getStarterCards(userId);
+    return ResponseEntity.ok(cards);
   }
 }

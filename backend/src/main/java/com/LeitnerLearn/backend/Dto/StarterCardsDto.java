@@ -1,16 +1,14 @@
 package com.LeitnerLearn.backend.Dto;
 
+import com.LeitnerLearn.backend.Entity.GlobalLearningCard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-@Getter
-public class CardIdListDto {
-
+public class StarterCardsDto {
   private int count;
-  private List<Long> ids;
+  private List<GlobalLearningCard> cards;
 }

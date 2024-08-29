@@ -1,9 +1,6 @@
 package com.LeitnerLearn.backend.Service;
 
-import com.LeitnerLearn.backend.Dto.CardIdListDto;
-import com.LeitnerLearn.backend.Dto.LearningCardDto;
-import com.LeitnerLearn.backend.Dto.LearningLevelStatsDto;
-import com.LeitnerLearn.backend.Dto.LearningStatsDto;
+import com.LeitnerLearn.backend.Dto.*;
 import com.LeitnerLearn.backend.Entity.*;
 import com.LeitnerLearn.backend.Exception.UserNotFoundException;
 import com.LeitnerLearn.backend.Repository.*;
@@ -175,5 +172,22 @@ public class StudyService {
     return new LearningLevelStatsDto(
       level01Count, level02Count, level03Count, level04Count
     );
+  }
+
+  @Transactional(readOnly = true)
+  public StarterCardsDto getStarterCards(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
+
+    List<Long> reviewingCardIds = user.getReviewingCardIds().getIds();
+    List<Long> longTermMemoryCardIds = user.getLongTermMemoryCardIds().getIds();
+
+    List<Long> studiedCardIds = new ArrayList<>();
+    studiedCardIds.addAll(reviewingCardIds);
+    studiedCardIds.addAll(longTermMemoryCardIds);
+
+    List<GlobalLearningCard> starterCards = globalLearningCardRepository.findAvailableStaterCardsForUser(userId, studiedCardIds);
+    int starterCardsCount = starterCards.size();
+
+    return new StarterCardsDto(starterCardsCount, starterCards);
   }
 }

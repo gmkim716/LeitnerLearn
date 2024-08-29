@@ -48,7 +48,7 @@ public class UserService {
       .username(userDto.getUsername())
       .email(userDto.getEmail())
       .password(userDto.getPassword())  // 실제 애플리케이션에서는 비밀번호를 암호화하는 것이 중요합니다.
-      .role(Role.USER)
+      .role(Role.USER_BEGINNER)
       .createdAt(LocalDateTime.now())
       .updatedAt(LocalDateTime.now())
       .build();
