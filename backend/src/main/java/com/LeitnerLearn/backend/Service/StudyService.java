@@ -50,16 +50,11 @@ public class StudyService {
   }
 
   private void saveNewReviewCard(Long cardId, Long userId, int boxNumber) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
+    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
     GlobalLearningCard newCard = globalLearningCardRepository.findById(cardId).orElseThrow(() -> new RuntimeException("교육 데이터를 조회할 수 없습니다"));
     Box box = boxRepository.findByBoxNumber(boxNumber).orElseThrow(() -> new RuntimeException("상자를 찾을 수 없습니다"));
 
-    LocalDateTime nextReviewAt;
-    if (boxNumber == 5) {  // 처음 본 문제를 맞힌 경우
-      nextReviewAt = LocalDateTime.now().plusDays(9999);
-    } else {
-      nextReviewAt = LocalDateTime.now();
-    }
+    LocalDateTime nextReviewAt = (boxNumber == 5) ? LocalDateTime.now().plusDays(9999) : LocalDateTime.now();
 
     ReviewCard reviewCard = ReviewCard.builder()
       .term(newCard.getTerm())
@@ -73,28 +68,43 @@ public class StudyService {
       .build();
 
     reviewCardRepository.save(reviewCard);
+
+    if (boxNumber == 5) {
+      user.addLongTermMemoryCardId(cardId);
+    } else {
+      user.addReviewCardId(cardId);
+    }
+    userRepository.save(user);
   }
 
   private void moveCardToNextBox(Long cardId, Long userId) {
-    ReviewCard reviewCard = reviewCardRepository.findByGlobalLearningCardIdAndUserId(cardId, userId)
-      .orElseThrow(() -> new RuntimeException("카드를 찾을 수 없습니다"));
-    Box nextBox = boxRepository.findByBoxNumber(reviewCard.getBox().getBoxNumber() + 1)
-      .orElseThrow(() -> new RuntimeException("다음 카드 상자를 찾을 수 없습니다"));
+    ReviewCard reviewCard = reviewCardRepository.findByGlobalLearningCardIdAndUserId(cardId, userId).orElseThrow(() -> new RuntimeException("카드를 찾을 수 없습니다"));
+    Box nextBox = boxRepository.findByBoxNumber(reviewCard.getBox().getBoxNumber() + 1).orElseThrow(() -> new RuntimeException("다음 카드 상자를 찾을 수 없습니다"));
 
     reviewCard.promoteToNextBox(nextBox);
-
     reviewCardRepository.save(reviewCard);
+
+    if (nextBox.getBoxNumber() == 5) {
+      User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
+      user.removeReviewCardId(cardId);
+      user.addLongTermMemoryCardId(cardId);
+      userRepository.save(user);
+    }
   }
 
   private void moveCardToPrevBox(Long cardId, Long userId) {
-    ReviewCard reviewCard = reviewCardRepository.findByGlobalLearningCardIdAndUserId(cardId, userId)
-      .orElseThrow(() -> new RuntimeException("카드를 찾을 수 없습니다"));
-    Box prevBox = boxRepository.findByBoxNumber(Math.max(reviewCard.getBox().getBoxNumber() - 1, 1))
-      .orElseThrow(() -> new RuntimeException("다음 카드 상자를 찾을 수 없습니다"));
+    ReviewCard reviewCard = reviewCardRepository.findByGlobalLearningCardIdAndUserId(cardId, userId).orElseThrow(() -> new RuntimeException("카드를 찾을 수 없습니다"));
+    Box prevBox = boxRepository.findByBoxNumber(Math.max(reviewCard.getBox().getBoxNumber() - 1, 1)).orElseThrow(() -> new RuntimeException("다음 카드 상자를 찾을 수 없습니다"));
 
     reviewCard.promoteToPrevBox(prevBox);
-
     reviewCardRepository.save(reviewCard);
+
+    if (reviewCard.getBox().getBoxNumber() == 5) {
+      User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
+      user.removeLongTermMemoryCardId(cardId);
+      user.addReviewCardId(cardId);
+      userRepository.save(user);
+    }
   }
 
   @Transactional(readOnly = true)

@@ -6,3 +6,22 @@
 ### 구현에 반영 사항 추가
 - 모든 사용자는 가입 후, 일정 기간 동안 기본적인 재정 교육을 수료해야 함
 - 사용자의 학습 레벨에 맞는 학습 카드를 제공, 정답률이 70% 이상이면 한 단계 위의 컨텐츠 접근 가능 
+
+
+
+
+---
+# 구현 과정에서 배운 점
+
+### 조건문에 삼항 연산자를 사용하는 방법
+- 삼항연산자를 활용해 조건문을 간소화할 수 있다
+- 클래스의 메서드를 실행할 때는 삼항연산자를 사용하지 않고 케이스를 구분하도록 한다
+```java
+//    LocalDateTime nextReviewAt;
+//    if (boxNumber == 5) { 
+//      nextReviewAt = LocalDateTime.now().plusDays(9999);
+//    } else {
+//      nextReviewAt = LocalDateTime.now();
+//    }
+    LocalDateTime nextReviewAt = (boxNumber == 5) ? LocalDateTime.now().plusDays(9999) : LocalDateTime.now();
+```

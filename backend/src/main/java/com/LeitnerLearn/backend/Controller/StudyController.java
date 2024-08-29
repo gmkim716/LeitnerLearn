@@ -46,7 +46,7 @@ public class StudyController {
     return ResponseEntity.ok(cards);
   }
 
-  @Operation(summary = "특정 사용자의 학습 목록을 조회합니다.", description = "난이도별 학습 목록과 개수를 조회합니다.")
+  @Operation(summary = "특정 사용자의 학습 목록 통계를 조회합니다.", description = "난이도별 학습 목록과 개수를 조회합니다.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "학습 목록이 성공적으로 반환되었습니다."),
     @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없습니다.")

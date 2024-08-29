@@ -46,6 +46,32 @@ public class User {
   @LastModifiedDate
   private LocalDateTime updatedAt;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<ReviewCard> reviewCards = new ArrayList<>();
+  @ElementCollection  // Check. 정리하기
+  @CollectionTable(name = "user_reviewing_card_ids", joinColumns = @JoinColumn(name = "user_id"))
+  @Column(name = "card_id")
+  private List<Long> reviewCardIds = new ArrayList<>();
+
+  @ElementCollection
+  @CollectionTable(name = "user_long_term_memory_card_ids", joinColumns = @JoinColumn(name = "user_id"))
+  private List<Long> longTermMemoryCardIds = new ArrayList<>();
+
+  public void addReviewCardId(Long reviewCardId) {
+    this.reviewCardIds.add(reviewCardId);
+  }
+
+  public void removeReviewCardId(Long reviewCardId) {
+    this.reviewCardIds.remove(reviewCardId);
+  }
+
+  public void addLongTermMemoryCardId(Long longTermMemoryCardId) {
+    if (!this.longTermMemoryCardIds.contains(longTermMemoryCardId)) {
+      this.longTermMemoryCardIds.add(longTermMemoryCardId);
+    }
+  }
+
+  public void removeLongTermMemoryCardId(Long cardId) {
+    if (this.longTermMemoryCardIds.remove(cardId)) {
+      this.addReviewCardId(cardId);
+    }
+  }
 }
