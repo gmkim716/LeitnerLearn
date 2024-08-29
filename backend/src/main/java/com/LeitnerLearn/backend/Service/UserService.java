@@ -37,15 +37,13 @@ public class UserService {
         .build();  // 메시지를 생략하고 상태 코드만 반환
     }
 
-    // 유효성 검사
     if (userDto.getUsername() == null || userDto.getUsername().isEmpty()) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 메시지를 생략하고 상태 코드만 반환
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
     if (userDto.getPassword() == null || userDto.getPassword().isEmpty()) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 메시지를 생략하고 상태 코드만 반환
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    // User 엔티티 생성 및 저장
     User user = User.builder()
       .username(userDto.getUsername())
       .email(userDto.getEmail())

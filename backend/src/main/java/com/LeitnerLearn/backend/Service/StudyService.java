@@ -1,7 +1,10 @@
 package com.LeitnerLearn.backend.Service;
 
 import com.LeitnerLearn.backend.Dto.LearningCardDto;
+import com.LeitnerLearn.backend.Dto.LearningLevelStatsDto;
+import com.LeitnerLearn.backend.Dto.LearningStatsDto;
 import com.LeitnerLearn.backend.Entity.*;
+import com.LeitnerLearn.backend.Exception.UserNotFoundException;
 import com.LeitnerLearn.backend.Repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,8 +50,6 @@ public class StudyService {
   }
 
   private void saveNewReviewCard(Long cardId, Long userId, int boxNumber) {
-    log.info("########### userId: " + userId);
-
     User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
     GlobalLearningCard newCard = globalLearningCardRepository.findById(cardId).orElseThrow(() -> new RuntimeException("교육 데이터를 조회할 수 없습니다"));
     Box box = boxRepository.findByBoxNumber(boxNumber).orElseThrow(() -> new RuntimeException("상자를 찾을 수 없습니다"));
@@ -75,8 +76,6 @@ public class StudyService {
   }
 
   private void moveCardToNextBox(Long cardId, Long userId) {
-
-    log.info("########### moveCardToNextBox에 사용된 값" + " cardId : " + cardId + " userId : " + userId);
     ReviewCard reviewCard = reviewCardRepository.findByGlobalLearningCardIdAndUserId(cardId, userId)
       .orElseThrow(() -> new RuntimeException("카드를 찾을 수 없습니다"));
     Box nextBox = boxRepository.findByBoxNumber(reviewCard.getBox().getBoxNumber() + 1)
@@ -107,8 +106,6 @@ public class StudyService {
 
     // 새롭게 학습할 카드를 추가한다
     Pageable pageable = PageRequest.of(0, 30 - reviewCardsCount);  // 총 30개의 개수가 될 수 있도록 reviewCards에서 나머지 개수만큼 구함
-//    Page<GlobalLearningCard> newCards = globalLearningCardRepository.findAll(pageable);  // user의 복습 카드에 없는 항목을 조회해야 함
-
     Page<GlobalLearningCard> newCards = globalLearningCardRepository.findAllExcludingUserReviewCards(userId, pageable);
 
     // 복습 카드와 새로운 카드를 섞어서 학습 덱을 생성한다
@@ -129,5 +126,42 @@ public class StudyService {
       .newCards(newCards.getContent())
       .shuffledCards(shuffledCards)
       .build();
+  }
+
+  @Transactional(readOnly = true)
+  public LearningStatsDto getLearningStats(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다"));
+
+    List<ReviewCard> reviewCards = reviewCardRepository.findByUserId(userId);
+    int totalReviewCardsCount = reviewCards.size();
+
+    LearningLevelStatsDto levelStats = getLearningLevelStatsDto(reviewCards);
+
+    return LearningStatsDto.builder()
+      .userId(user.getId())
+      .username(user.getUsername())
+      .totalReviewCardsCount(totalReviewCardsCount)
+      .learningLevelStats(levelStats)
+      .build();
+  }
+
+  private LearningLevelStatsDto getLearningLevelStatsDto(List<ReviewCard> reviewCards) {
+    int level01Count = 0;
+    int level02Count = 0;
+    int level03Count = 0;
+    int level04Count = 0;
+
+    for (ReviewCard reviewCard : reviewCards) {
+      switch (reviewCard.getDifficultyLevel()) {
+        case BEGINNER -> level01Count++;
+        case INTERMEDIATE -> level02Count++;
+        case ADVANCED -> level03Count++;
+        case EXPERT -> level04Count++;
+      }
+    }
+
+    return new LearningLevelStatsDto(
+      level01Count, level02Count, level03Count, level04Count
+    );
   }
 }
