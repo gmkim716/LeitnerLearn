@@ -2,6 +2,7 @@ package com.LeitnerLearn.backend.Controller;
 
 import com.LeitnerLearn.backend.Dto.UserRequestDto;
 import com.LeitnerLearn.backend.Dto.UserResponseDto;
+import com.LeitnerLearn.backend.Entity.Role;
 import com.LeitnerLearn.backend.Entity.User;
 import com.LeitnerLearn.backend.Service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,11 +61,12 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "사용자 정보가 성공적으로 수정되었습니다."),
     @ApiResponse(responseCode = "404", description = "해당 ID의 사용자를 찾을 수 없습니다.")
   })
-  @PutMapping("/{id}")
+  @PutMapping("/{userId}")
   public ResponseEntity<UserResponseDto> updateUser(
-    @Parameter(description = "수정할 사용자의 ID", required = true) @PathVariable Long id,
-    @Parameter(description = "수정할 사용자 정보", required = true) @RequestBody UserRequestDto user) {
-    return ResponseEntity.ok(userService.updateUser(id, user));
+    @Parameter(description = "수정할 사용자의 ID", required = true) @PathVariable Long userId,
+    @Parameter(description = "수정할 사용자 정보", required = true) @RequestBody UserRequestDto userDto) {
+    UserResponseDto updatedUser = userService.updateUser(userId, userDto);
+    return ResponseEntity.ok(updatedUser);
   }
 
   @Operation(summary = "사용자를 삭제합니다.", description = "특정 사용자를 삭제합니다.")
@@ -80,5 +82,18 @@ public class UserController {
     } else {
       return ResponseEntity.notFound().build();
     }
+  }
+
+  // 사용자의 role을 변경합니다
+  @Operation(summary = "사용자의 role을 변경합니다.", description = "특정 사용자의 role을 변경합니다.")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "사용자의 role이 성공적으로 변경되었습니다."),
+    @ApiResponse(responseCode = "404", description = "해당 ID의 사용자를 찾을 수 없습니다.")
+  })
+  @PutMapping("/role/{userId}")
+  public ResponseEntity<UserResponseDto> updateUserRole(
+    @Parameter(description = "role을 변경할 사용자의 ID", required = true) @PathVariable Long userId,
+    @Parameter(description = "변경할 role", required = true) @RequestParam Role role) {
+    return ResponseEntity.ok(userService.updateUserRole(userId, role));
   }
 }

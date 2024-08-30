@@ -18,7 +18,15 @@ export default function Header() {
             <li>
               <Link
                 className="text-lg font-bold hover:bg-skyBlue trasition duration-300 px-3 py-2 rounded"
-                href="/login.html"
+                href="/study"
+              >
+                학습하기
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-lg font-bold hover:bg-skyBlue trasition duration-300 px-3 py-2 rounded"
+                href="/login"
               >
                 로그인
               </Link>
@@ -26,7 +34,7 @@ export default function Header() {
             <li>
               <Link
                 className="text-lg font-bold hover:bg-skyBlue trasition duration-300 px-3 py-2 rounded"
-                href="/register.html"
+                href="/register"
               >
                 회원가입
               </Link>
@@ -34,7 +42,7 @@ export default function Header() {
             <li>
               <Link
                 className="text-lg font-bold hover:bg-skyBlue trasition duration-300 px-3 py-2 rounded"
-                href="/about.html"
+                href="/about"
               >
                 소개
               </Link>

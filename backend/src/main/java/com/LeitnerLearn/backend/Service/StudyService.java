@@ -190,4 +190,5 @@ public class StudyService {
 
     return new StarterCardsDto(starterCardsCount, starterCards);
   }
+
 }

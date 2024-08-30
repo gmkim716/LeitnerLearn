@@ -3,7 +3,6 @@ package com.LeitnerLearn.backend.Controller;
 import com.LeitnerLearn.backend.Dto.LearningCardDto;
 import com.LeitnerLearn.backend.Dto.LearningStatsDto;
 import com.LeitnerLearn.backend.Dto.StarterCardsDto;
-import com.LeitnerLearn.backend.Entity.GlobalLearningCard;
 import com.LeitnerLearn.backend.Service.StudyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,8 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/study")
@@ -67,7 +64,7 @@ public class StudyController {
     @ApiResponse(responseCode = "200", description = "필수 학습카드를 모두 이수했습니다."),
     @ApiResponse(responseCode = "404", description = "필수 학습카드를 이수하지 못했습니다.")
   })
-  @GetMapping("/cards/starter-cards/{userId}")
+  @GetMapping("/cards/must-complete/{userId}")
   public ResponseEntity<StarterCardsDto> getStarterCards(
     @Parameter(description = "사용자 ID", required = true) @PathVariable Long userId) {
     StarterCardsDto cards = studyService.getStarterCards(userId);
