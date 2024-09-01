@@ -13,6 +13,15 @@
 ---
 # 구현 과정에서 배운 점
 
+### JWT 토큰 인증 단계
+1. 의존성 추가
+2. JWT 토큰 생성 및 검증하는 클래스 생성
+3. Spring Security의 UserDetailsService 구현 클래스 생성
+4. 인증 컨트롤러 작성
+5. JWT 필터 작성
+6. SecurityConfig 클래스에 보안설정을 추가, 로그인 과정에서 JWT를 사용하도록 설정
+7. (추가) 로그인 요청에 사용될 DTO 클래스 작성
+
 ### @ElementCollection, @Transient
 - @ElementCollection: 엔티티 내에서 기본 값 또는 다른 엔티티와의 관계가 아닌 값 타입 컬렉션을 매핑할 때 사용한다.
     

@@ -5,11 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,21 +19,21 @@ public class SecurityConfig {
 
   private final JwtTokenFilter jwtTokenFilter;
 
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-      .csrf(CsrfConfigurer::disable)
+      .csrf(CsrfConfigurer::disable)  // CSRF 보호 비활성화
       .authorizeHttpRequests(authorizeRequests ->
         authorizeRequests
-          .requestMatchers("/api/v1/users/register").permitAll()
-          .requestMatchers("/api/v1/users/**").hasRole("USER")
-          .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-          .anyRequest().authenticated()
+          .requestMatchers("/api/v1/auth/login", "/api/v1/users/register").permitAll()  // 로그인 및 회원가입은 인증 없이 접근 가능
+          .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+          .requestMatchers("/api/v1/users/**").hasRole("USER")  // USER 역할을 가진 사용자만 접근 가능
+          .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")  // ADMIN 역할을 가진 사용자만 접근 가능
+          .anyRequest().authenticated()  // 그 외의 모든 요청은 인증 필요
       )
-      .httpBasic(Customizer.withDefaults())  // HTTP 기본 인증 사용
-      .formLogin(Customizer.withDefaults())  // 폼 로그인 사용
-      .logout(Customizer.withDefaults())  // 로그아웃 사용
-      .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+      .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);  // JWT 필터 추가
+
     return http.build();
   }
 

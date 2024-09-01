@@ -1,13 +1,11 @@
 spring:
   application:
     name: LeitnerLearn
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/leitner
     username: root
     password:
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,3 +13,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+jwt:
+  secretKey: leitner-learn-system-card-study-application;
+  expiration: 3600000  # 1시간
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

@@ -1,6 +1,6 @@
 package com.LeitnerLearn.backend.Filter;
 
-import com.LeitnerLearn.backend.Config.JwtTokenProvider;
+import com.LeitnerLearn.backend.Utils.JwtUtils;
 import com.LeitnerLearn.backend.Service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +24,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-  private final JwtTokenProvider jwtTokenProvider;
+  private final JwtUtils jwtUtils;
   private final CustomUserDetailsService customUserDetailsService;
 
   @Override
@@ -36,8 +36,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     try {
       String token = resolveToken(request);
 
-      if (token != null && jwtTokenProvider.validateToken(token)) {
-        String username = jwtTokenProvider.getUsername(token);
+      if (token != null && jwtUtils.validateToken(token)) {
+        String username = jwtUtils.getUsername(token);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
         if (userDetails != null) {

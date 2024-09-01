@@ -1,4 +1,4 @@
-import DeckCard from "@/components/Compound/card/DeckCard";
+import DeckCard from "@/components/Card/DeckCard";
 import useDeck from "@/hooks/useDeck";
 import Link from "next/link";
 

@@ -1,6 +1,8 @@
 package com.LeitnerLearn.backend.Entity;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
 
 @RequiredArgsConstructor
 public enum Role {
@@ -15,5 +17,9 @@ public enum Role {
 
   Role(String code) {
     this.code = code;
+  }
+
+  public String getCode() {
+    return code;
   }
 }
