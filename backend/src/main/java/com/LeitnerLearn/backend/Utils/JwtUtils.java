@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -39,8 +38,8 @@ public class JwtUtils {
     Date now = new Date();
     Date validity = new Date(now.getTime() + expirationTime);
 
+    // 토큰에 담길 정보 설정
     return Jwts.builder()
-      .setSubject("user-token-information")  // 토큰 제목
       .claim("userId", userDetails.getId())
       .claim("username", userDetails.getUsername())
       .claim("role", userDetails.getAuthorities().stream().findFirst().get().getAuthority())  // 클레임 추가
