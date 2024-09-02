@@ -26,7 +26,7 @@ export default function Header() {
             <li>
               <Link
                 className="text-lg font-bold hover:bg-skyBlue trasition duration-300 px-3 py-2 rounded"
-                href="/my-vocabulary"
+                href="/my-words"
               >
                 단어장
               </Link>
