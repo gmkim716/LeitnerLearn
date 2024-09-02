@@ -2,6 +2,7 @@ import { useState } from "react";
 import Form from "../ui/form/Form";
 import { getLogin } from "@/pages/api/authApi";
 import { useRouter } from "next/router";
+import { parseJwt } from "@/pages/api/context/parseJwt";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const response = await getLogin(email, password);
-    console.log("response", response);
+    console.log("token-info", parseJwt(response));
     router.push("/study");
   };
 
@@ -22,10 +23,6 @@ export default function LoginForm() {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-
-  // useEffect(() => {
-  //   console.log(email, password);
-  // }, [email, password]);
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>

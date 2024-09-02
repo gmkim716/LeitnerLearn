@@ -1,6 +1,5 @@
 // deck-detil은 card-list와 동일한 페이지를 나타냅니다. 혼동을 막기 위해서 card-list를 기준으로 설정합니다.
 
-import LearningCard from "@/components/Compound/card/LearningCard";
 import useCards from "@/hooks/useCards";
 import { LearningCardType } from "@/types/learningCard";
 import { useRouter } from "next/router";

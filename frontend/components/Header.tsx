@@ -10,7 +10,7 @@ export default function Header() {
             <li>
               <Link
                 className="text-lg font-bold hover:bg-skyBlue trasition duration-300 px-3 py-2 rounded"
-                href="/index.html"
+                href="/"
               >
                 홈
               </Link>
@@ -26,17 +26,9 @@ export default function Header() {
             <li>
               <Link
                 className="text-lg font-bold hover:bg-skyBlue trasition duration-300 px-3 py-2 rounded"
-                href="/login"
+                href="/my-vocabulary"
               >
-                로그인
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-lg font-bold hover:bg-skyBlue trasition duration-300 px-3 py-2 rounded"
-                href="/register"
-              >
-                회원가입
+                단어장
               </Link>
             </li>
             <li>

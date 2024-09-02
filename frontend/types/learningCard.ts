@@ -3,6 +3,6 @@ export interface LearningCardType {
   term: string;
   definition: string;
   exampleSentence: string;
-  nextReviewAt: string; // 시각
-  tags: string[];
+  nextReviewAt: string;
+  shuffledCards?: LearningCardType[];
 }
