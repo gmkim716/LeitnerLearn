@@ -1,5 +1,6 @@
 package com.LeitnerLearn.backend.Utils;
 
+import com.LeitnerLearn.backend.Service.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -34,12 +34,15 @@ public class JwtUtils {
     }
 
   public String createToken(Authentication authentication) {
-    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
     Date now = new Date();
     Date validity = new Date(now.getTime() + expirationTime);
 
     return Jwts.builder()
-      .setSubject(userDetails.getUsername())  // 토큰 제목
+      .setSubject("user-token-information")  // 토큰 제목
+      .claim("userId", userDetails.getId())
+      .claim("username", userDetails.getUsername())
       .claim("role", userDetails.getAuthorities().stream().findFirst().get().getAuthority())  // 클레임 추가
       .setIssuedAt(now)  // 토큰 발급일자
       .setExpiration(validity)  // 토큰 만기일자
