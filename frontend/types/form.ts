@@ -6,6 +6,9 @@ interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   name: string;
+  value: string;
+  setValue: (value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,17 +1,20 @@
 export default function FormInput({
   id,
-  name,
   type = "text",
   required = false,
+  value,
+  setValue,
+  onChange,
   ...props
 }: InputProps) {
   return (
     <input
+      className="w-full p-2 border border-gray-300 rounded-lg"
       type={type}
       id={id}
-      name={name}
       required={required}
-      className="w-full p-2 border border-gray-300 rounded-lg"
+      value={value}
+      onChange={onChange}
       {...props}
     />
   );

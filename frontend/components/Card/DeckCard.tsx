@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Card from "../compound/card/Card";
+import Card from "../ui/card/Card";
 
 interface DeckCardProps {
   id: number;

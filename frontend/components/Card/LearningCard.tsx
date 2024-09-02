@@ -1,4 +1,4 @@
-import Card from "../compound/card/Card";
+import Card from "../ui/card/Card";
 
 interface LearningCardProps {
   term: string;

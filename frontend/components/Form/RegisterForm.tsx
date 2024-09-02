@@ -1,5 +1,5 @@
 import AuthForm from "./AuthForm";
-import Form from "../compound/form/Form";
+import Form from "../ui/form/Form";
 
 export default function RegisterForm() {
   const handleSubmit = (e: React.FormEvent) => {
